@@ -6,11 +6,20 @@ public class ToDoTask {
     private String taskDescription;
     private String taskDetails;
     private LocalDate taskDueDate;
+    private boolean taskStatus;
 
     public ToDoTask(String taskDescription, String taskDetails, LocalDate taskDueDate) {
         this.taskDescription = taskDescription;
         this.taskDetails = taskDetails;
         this.taskDueDate = taskDueDate;
+        this.taskStatus = false;
+    }
+
+    public ToDoTask(String taskDescription) {
+        this.taskDescription = taskDescription;
+        this.taskDetails = "";
+        this.taskDueDate = null;
+        this.taskStatus = false;
     }
 
     public String getTaskDescription() {
@@ -35,6 +44,14 @@ public class ToDoTask {
 
     public void setTaskDetails(String taskDetails) {
         this.taskDetails = taskDetails;
+    }
+
+    public boolean isTaskDone() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(boolean taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }
 
