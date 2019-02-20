@@ -3,31 +3,37 @@ package ToDoList;
 import java.time.LocalDate;
 
 public class ToDoTask {
-    private String taskDescription;
+    private String taskTitle;
     private String taskDetails;
     private LocalDate taskDueDate;
     private boolean taskStatus;
+    private int taskID;
 
-    public ToDoTask(String taskDescription, String taskDetails, LocalDate taskDueDate) {
-        this.taskDescription = taskDescription;
+    private static int countID = 0;
+
+    public ToDoTask(String taskTitle, String taskDetails, LocalDate taskDueDate) {
+        this.taskTitle = taskTitle;
         this.taskDetails = taskDetails;
         this.taskDueDate = taskDueDate;
         this.taskStatus = false;
+        this.countID++;
+        taskID = this.countID;
     }
 
-    public ToDoTask(String taskDescription) {
-        this.taskDescription = taskDescription;
-        this.taskDetails = "";
-        this.taskDueDate = null;
-        this.taskStatus = false;
+    public int getTaskID(){
+        return taskID;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
+    public ToDoTask(String taskTitle) {
+        this (taskTitle, "", null);
     }
 
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
+    public String getTaskTitle() {
+        return taskTitle;
+    }
+
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
     }
 
     public LocalDate getTaskDueDate() {
@@ -35,7 +41,11 @@ public class ToDoTask {
     }
 
     public void setTaskDueDate(LocalDate taskDueDate) {
-        this.taskDueDate = taskDueDate;
+        if (taskDueDate.isAfter(LocalDate.now())) {
+            this.taskDueDate = taskDueDate;
+        } else {
+            System.out.println("The date is set before today's date");
+        }
     }
 
     public String getTaskDetails() {
@@ -50,8 +60,12 @@ public class ToDoTask {
         return taskStatus;
     }
 
-    public void setTaskStatus(boolean taskStatus) {
-        this.taskStatus = taskStatus;
+    public void changeTaskStatus() {
+        if(isTaskDone()) {
+            taskStatus = false;
+        } else {
+            taskStatus = true;
+        }
     }
 }
 
