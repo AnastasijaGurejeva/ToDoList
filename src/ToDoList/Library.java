@@ -57,8 +57,9 @@ public class Library {
         return null; // throw exception??
     }
 
-    //task reference is given to a project.
+    //task ID is given to a project List.
     // If project doesn't exists, it is created automatically and added to a allProjects Table
+
     public void assignTaskToProject(ToDoTask task, String projectName) {
         if (ifProjectExist(projectName)) {
             allProjects.get(projectName).addTaskToProject(task.getTaskID());
@@ -70,44 +71,75 @@ public class Library {
     }
 
     public void reassignTasksProject(String taskTitle, String projectName, String newProjectName) {
-        if (ifTaskExist(taskTitle) && ifProjectExist(projectName)) {
-            assignTaskToProject(findTask(taskTitle), newProjectName);
-            removeTaskFromProject(taskTitle, projectName);
+        ToDoTask t = findTask(taskTitle);
+        if (t == null) {
+            System.out.println("Task doesn't exist");
+            return;
         }
+
+        if (!ifProjectExist(projectName)) {
+            System.out.println("Project doesn't exist");
+            return;
+        }
+
+        assignTaskToProject(findTask(taskTitle), newProjectName);
+        removeTaskFromProject(taskTitle, projectName);
+
     }
 
+    // Deletes task from all Task collection and
+    // all Id of this task from projects containing the task
 
-    public void deleteTask(String taskTitle) { // split to few methods??
-        if (ifTaskExist(taskTitle)) {
-            int id = findTask(taskTitle).getTaskID(); //might need to handle exception
-            allTasks.remove(id);
-            // Deleting all references of this task from projects containing the task
-            Collection<Project> list = allProjects.values();
-            for(Project p : list) {
-               List<Integer> taskids = p.getListOfTasks();
-                Iterator<Integer> it =taskids.iterator();
-                   while(it.hasNext()) {
-                       if(it.next() == id) {
-                          it.remove();
-                    }
-                }
-            }
-        } else {
+    public void deleteTask(String taskTitle) {
+        ToDoTask t = findTask(taskTitle);
+        if (t == null) {
             System.out.println("Task doesn't exist");
+            return;
+        }
+
+        int taskId = t.getTaskID();
+        allTasks.remove(taskId);
+
+        Collection<Project> list = allProjects.values();
+        for (Project p : list) {
+            p.removeTaskByID(taskId);
         }
     }
 
     private void removeTaskFromProject(String taskTitle, String projectName) {
-        if (ifTaskExist(taskTitle) && ifProjectExist(projectName)) {
-            Integer taskID = findTask(taskTitle).getTaskID(); //might need to handle exception
-            allProjects.get(projectName).getListOfTasks().remove(taskID);
+        ToDoTask t = findTask(taskTitle);
+        if (t == null) {
+            System.out.println("Task doesn't exist");
+            return;
         }
+
+        if (!ifProjectExist(projectName)) {
+            System.out.println("Project doesn't exist");
+            return;
+        }
+
+        Integer taskID = t.getTaskID(); //might need to handle exception
+        allProjects.get(projectName).removeTaskByID(taskID);
     }
 
-    public void changeTaskStatus(String taskTitle) {
-        if (ifTaskExist(taskTitle)) {
-            findTask(taskTitle).changeTaskStatus(); //might need to handle exception
+    public void changeTaskStatus(String taskTitle) { //doesn't belong here???
+        ToDoTask t = findTask(taskTitle);
+        if (t == null) {
+            System.out.println("Task doesn't exist");
+            return;
         }
+        t.changeTaskStatus();
+    }
+
+    public String constructDetails(ToDoTask task) {
+        return "Task Title: " + task.getTaskTitle() + " Task details: "
+                + task.getTaskDetails() + " Due date: " + task.getTaskDueDate()
+                + " Task status: " + task.isTaskDone();
+    }
+
+    public void printList() {
+        allTasks.values().stream()
+                .forEach(t -> System.out.println(constructDetails(t)));
     }
 
     public void sortByProject(String projectName) {
@@ -125,14 +157,9 @@ public class Library {
                 .forEach(t -> System.out.println(constructDetails(t)));
     }
 
-    public String constructDetails(ToDoTask task){
-        return "Task Title: " + task.getTaskTitle() + " Task details: " + task.getTaskDetails() + " Due date: " + task.getTaskDueDate() + " Task status: " + task.isTaskDone();
-    }
 
-    public void printList(){
-        allTasks.values().stream()
-                .forEach(t-> System.out.println(constructDetails(t)));
-    }
+
+
 
 
 }
