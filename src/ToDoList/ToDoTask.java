@@ -20,12 +20,12 @@ public class ToDoTask {
         taskID = this.countID;
     }
 
-    public int getTaskID(){
-        return taskID;
+    public ToDoTask(String taskTitle,  LocalDate taskDueDate) {
+        this (taskTitle, "",  taskDueDate);
     }
 
-    public ToDoTask(String taskTitle) {
-        this (taskTitle, "", null);
+    public int getTaskID() {
+        return taskID;
     }
 
     public String getTaskTitle() {
@@ -63,8 +63,10 @@ public class ToDoTask {
     public void changeTaskStatus() {
         if(isTaskDone()) {
             taskStatus = false;
+            System.out.println("Not done");
         } else {
             taskStatus = true;
+            System.out.println("Done");
         }
     }
 }

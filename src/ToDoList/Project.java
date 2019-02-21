@@ -16,12 +16,12 @@ public class Project {
         return projectName;
     }
 
-    public void setProjectName(String projectName) {
+    public void renameProject(String projectName) {
         this.projectName = projectName;
     }
 
-    public void addTaskToProject(ToDoTask task) {
-        listOfTasksID.add(task.getTaskID());
+    public void addTaskToProject(Integer taskID) {
+        listOfTasksID.add(taskID);
     }
 
     public List <Integer> getListOfTasks() {
