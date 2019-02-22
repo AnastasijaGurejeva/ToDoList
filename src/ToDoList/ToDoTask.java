@@ -1,27 +1,30 @@
 package ToDoList;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ToDoTask {
     private String taskTitle;
     private String taskDetails;
-    private LocalDate taskDueDate;
     private boolean taskStatus;
     private int taskID;
-
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+    private LocalDate taskDueDate;
     private static int countID = 0;
 
-    public ToDoTask(String taskTitle, String taskDetails, LocalDate taskDueDate) {
+
+
+    public ToDoTask(String taskTitle, String taskDetails, String taskDueDate) {
         this.taskTitle = taskTitle;
         this.taskDetails = taskDetails;
-        this.taskDueDate = taskDueDate;
+        this.taskDueDate = LocalDate.parse(taskDueDate,formatter);
         this.taskStatus = false;
         this.countID++;
         taskID = this.countID;
     }
 
-    public ToDoTask(String taskTitle,  LocalDate taskDueDate) {
-        this (taskTitle, "",  taskDueDate);
+    public ToDoTask(String taskTitle) {
+        this (taskTitle, "",  "31/12/2019");
     }
 
     public int getTaskID() {
@@ -40,7 +43,8 @@ public class ToDoTask {
         return taskDueDate;
     }
 
-    public void setTaskDueDate(LocalDate taskDueDate) {
+    public void setTaskDueDate(String newTaskDueDate) {
+        LocalDate taskDueDate = LocalDate.parse(newTaskDueDate,formatter);
         if (taskDueDate.isAfter(LocalDate.now())) {
             this.taskDueDate = taskDueDate;
         } else {
