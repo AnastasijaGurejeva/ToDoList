@@ -12,7 +12,7 @@ public class Library {
     }
 
     //when task is created it is automatically added to allTasks table;
-    private void addTask(ToDoTask newTask) {
+    public void addTask(ToDoTask newTask) {
         allTasks.put(newTask.getTaskID(), newTask);
     }
 
@@ -84,7 +84,6 @@ public class Library {
 
         assignTaskToProject(findTask(taskTitle), newProjectName);
         removeTaskFromProject(taskTitle, projectName);
-
     }
 
     // Deletes task from all Task collection and
@@ -156,11 +155,6 @@ public class Library {
                 .sorted(Comparator.comparing(ToDoTask::getTaskDueDate))
                 .forEach(t -> System.out.println(constructDetails(t)));
     }
-
-
-
-
-
 
 }
 
