@@ -57,17 +57,23 @@ public class ToDoTask {
         this.taskDetails = taskDetails;
     }
 
-    public boolean isTaskDone() {
+    private boolean isTaskDone() {
         return taskStatus;
+    }
+
+    public String taskStatus() {
+        if(isTaskDone()) {
+            return "Done";
+        } else {
+            return "Not done";
+        }
     }
 
     public void changeTaskStatus() {
         if(isTaskDone()) {
             taskStatus = false;
-            System.out.println("Not done");
         } else {
             taskStatus = true;
-            System.out.println("Done");
         }
     }
 }

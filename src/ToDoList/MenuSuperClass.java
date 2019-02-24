@@ -39,7 +39,8 @@ public abstract class MenuSuperClass extends Observable {
         int choice;
         while (true) {
             try {
-                return choice = scanner.nextInt();
+                choice = scanner.nextInt();
+                return choice;
             } catch (InputMismatchException e ) {
                 System.out.println("Please enter a valid number for your choice in the menu");
                 scanner.nextLine();
@@ -53,8 +54,10 @@ public abstract class MenuSuperClass extends Observable {
     public String readStringInput() {
         String input;
         try {
-            input = scanner.nextLine();
+            input = scanner.next();
+            scanner.nextLine();
             return input;
+
 
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Invalid input");
@@ -70,7 +73,11 @@ public abstract class MenuSuperClass extends Observable {
                 DateTimeFormatter formatter =
                         DateTimeFormatter.ofPattern("d/MM/yyyy");
                 LocalDate taskDueDate = LocalDate.parse(date, formatter);
-                return taskDueDate;
+                if (taskDueDate.isAfter(LocalDate.now())) {
+                    return taskDueDate;
+                } else {
+                    System.out.println("The date is set before today's date. Please enter correct due date");
+                }
             } catch (DateTimeParseException exc) {
                 System.out.print("Please enter date in a correct format: d/MM/yyyy");
             }
