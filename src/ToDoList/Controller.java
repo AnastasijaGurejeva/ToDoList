@@ -1,76 +1,91 @@
 package ToDoList;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 class Controller implements Observer {
-    private MenuSuperClass menu;
+    private ViewSuperClass view;
     private Library library = new Library();
+    private List<ViewSuperClass> views;
+
+    public Controller() {
+        views = new ArrayList<>();
+    }
+
+    public void addViews() {
+        views.add(new MainView());
+        views.add(new CreateTask());
+        views.add(new AssignProject());
+        views.add(new EditTask());
+        views.add(new ChangeStatus());
+        views.add(new DeleteTask());
+        views.add(new SelectProject());
+        views.add(new ReassignProject());
+    }
 
 
     public void start() {
-        menu = new MainMenu();
-        menu.addObserver(this);
-        menu.display();
-        menu.readInput();
+        view = views.get(0);
+        view.addObserver(this);
+        view.display();
+        view.readInput();
 
     }
 
     public void callCreateTask() {
-        menu = new CreateTask();
-        menu.addObserver(this);
-        menu.display();
-        menu.readInput();
+        view = views.get(1);
+        view.addObserver(this);
+        view.display();
+        view.readInput();
     }
 
     public void callAssignTask() {
-        menu = new AssignProject();
-        menu.addObserver(this);
-        ((AssignProject) menu).getLibrary(library);
-        menu.display();
-        menu.readInput();
+        view = views.get(2);
+        view.addObserver(this);
+        ((AssignProject) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
     public void callEditTask() {
-        menu = new EditTask();
-        menu.addObserver(this);
-        ((EditTask) menu).getLibrary(library);
-        menu.display();
-        menu.readInput();
+        view = views.get(3);
+        view.addObserver(this);
+        ((EditTask) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
 
     public void callChangeTaskStatus() {
-        menu = new ChangeStatus();
-        menu.addObserver(this);
-        ((ChangeStatus) menu).getLibrary(library);
-        menu.display();
-        menu.readInput();
+        view = views.get(4);
+        view.addObserver(this);
+        ((ChangeStatus) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
     public void CallDeleteTask() {
-        menu = new DeleteTask();
-        menu.addObserver(this);
-        ((DeleteTask) menu).getLibrary(library);
-        menu.display();
-        menu.readInput();
+        view = views.get(5);
+        view.addObserver(this);
+        ((DeleteTask) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
     public void callSelectProject() {
-        menu = new SelectProject();
-        menu.addObserver(this);
-        menu.display();
-        menu.readInput();
+        view = views.get(6);
+        view.addObserver(this);
+        ((SelectProject) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
     public void callReassignProject() {
-        menu = new ReassignProject();
-        menu.addObserver(this);
-        ((ReassignProject) menu).getLibrary(library);
-        menu.display();
-        menu.readInput();
+        view = views.get(7);
+        view.addObserver(this);
+        ((ReassignProject) view).getLibrary(library);
+        view.display();
+        view.readInput();
     }
 
 
@@ -112,10 +127,10 @@ class Controller implements Observer {
                     callSelectProject();
                     break;
                 case 8:
-                    callSelectProject();
+                    callReassignProject();
                     break;
                 case 9:
-                    callReassignProject();
+                   //saveDataQuit();
                     break;
 
             }

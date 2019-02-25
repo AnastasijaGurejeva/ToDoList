@@ -5,26 +5,23 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public abstract class MenuSuperClass extends Observable {
-    private String menuTitle;
-    private String welcomeMessage;
-    private String menuDescription;
+public abstract class ViewSuperClass extends Observable {
+    private String viewTitle;
+    private String viewDescription;
     private Scanner scanner = new Scanner(System.in);
     private Map<String, Object> inputData;
 
 
 
-    public MenuSuperClass(String menuTitle, String welcomeMessage, String menuDescription) {
-        this.menuTitle = menuTitle;
-        this.welcomeMessage = welcomeMessage;
-        this.menuDescription = menuDescription;
+    public ViewSuperClass(String menuTitle, String menuDescription) {
+        this.viewTitle = menuTitle;
+        this.viewDescription = menuDescription;
         this.inputData = new HashMap<>();
     }
 
     public void printUserInterface() {
-        System.out.println(welcomeMessage);
-        System.out.println("\n" + menuTitle);
-        System.out.println("\n" + menuDescription);
+        System.out.println("\n" + viewTitle);
+        System.out.println("\n" + viewDescription);
     }
 
     abstract public void display();
@@ -57,8 +54,6 @@ public abstract class MenuSuperClass extends Observable {
             input = scanner.next();
             scanner.nextLine();
             return input;
-
-
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Invalid input");
         }
@@ -83,11 +78,4 @@ public abstract class MenuSuperClass extends Observable {
             }
         }
     }
-
-//    public void sendInputToController() {
-//
-//    }
-
-
-
 }

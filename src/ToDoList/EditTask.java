@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditTask extends MenuSuperClass {
+public class EditTask extends ViewSuperClass {
 
 
     private Library lib;
     private Map<String, Object> inputData = getInputData();
 
     public EditTask() {
-        super("TASK MENU", "Welcome! Here you can edit a task",
+        super("TASK MENU",
                 "Please select the task you want to edit by typing task's No ");
     }
 

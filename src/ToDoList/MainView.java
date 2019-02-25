@@ -2,9 +2,9 @@ package ToDoList;
 
 import java.util.Map;
 
-public class MainMenu extends MenuSuperClass {
-    public MainMenu() {
-        super("MAIN MENU", "Welcome to your To do list!",
+public class MainView extends ViewSuperClass {
+    public MainView() {
+        super("MAIN MENU",
                 "Select an option from the menu below: ");
     }
 
@@ -22,8 +22,7 @@ public class MainMenu extends MenuSuperClass {
                 "\n 6 - To sort tasks by due date" +
                 "\n 7 - To view tasks by given project" +
                 "\n 8 - To reassign task to a different project" +
-                "\n 9 - To sort tasks by due date inside given project" +
-                "\n 10 - To save and quit");
+                "\n 9 - To save and quit");
 
     }
 

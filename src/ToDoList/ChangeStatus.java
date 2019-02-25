@@ -3,14 +3,14 @@ package ToDoList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangeStatus extends MenuSuperClass {
+public class ChangeStatus extends ViewSuperClass {
 
 
     private Library lib;
 
 
     public ChangeStatus() {
-        super("List of your tasks", "",
+        super("LIST OF YOUR TASKS",
                 "Please select the task you want to mark as done" +
                         "by typing task's No ");
     }

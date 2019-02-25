@@ -3,12 +3,12 @@ package ToDoList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeleteTask extends MenuSuperClass {
+public class DeleteTask extends ViewSuperClass {
     private Library lib;
 
 
     public DeleteTask() {
-        super("List of your tasks", "",
+        super("LIST OF YOUR TASKS",
                 "Please select the task you want to delete" +
                         "by typing task's No ");
     }

@@ -3,12 +3,12 @@ package ToDoList;
 import java.time.LocalDate;
 import java.util.Map;
 
-public class CreateTask extends MenuSuperClass {
+public class CreateTask extends ViewSuperClass {
 
     private Map<String, Object> inputData = getInputData();
 
     public CreateTask() {
-        super("CREATE A NEW TASK", "",
+        super("CREATE A NEW TASK",
                 "");
 
     }

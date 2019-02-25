@@ -2,13 +2,13 @@ package ToDoList;
 
 import java.util.*;
 
-public class AssignProject extends MenuSuperClass {
+public class AssignProject extends ViewSuperClass {
 
     private Library lib;
     private Scanner scanner = new Scanner(System.in);
 
     public AssignProject() {
-        super("List of your tasks", "",
+        super("LIST OF YOUR TASKS",
                 "Please select the task by typing task's No ");
     }
 
@@ -39,8 +39,13 @@ public class AssignProject extends MenuSuperClass {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
+        System.out.println("LIST OF YOUR PROJECTS");
+        System.out.println("Please enter the existing name of the Project for this task or " +
+                "\n type in a new name of the project for your task: ");
+        lib.getAllProjects().keySet().stream()
+                .forEach(k-> System.out.println(k));
 
-        System.out.println("Please enter the name of the Project for this task: ");
+
         String projectName = readStringInput();
 
         Map<String, Object> inputData = getInputData();
