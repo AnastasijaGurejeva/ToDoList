@@ -1,16 +1,77 @@
 package ToDoList;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 class Controller implements Observer {
     private ViewSuperClass view;
     private Library library = new Library();
     private List<ViewSuperClass> views;
 
+
     public Controller() {
         views = new ArrayList<>();
     }
+
+
+    public void loadDataLibrary() {
+
+        Library library1 = new Library();
+        try {
+            FileInputStream dataLibrary = new FileInputStream("library.ser");
+            ObjectInputStream inDataLibrary = new ObjectInputStream(dataLibrary);
+
+            library1 = (Library) inDataLibrary.readObject();
+            inDataLibrary.close();
+            dataLibrary.close();
+
+        } catch (IOException ex) {
+            System.out.println("IOException is caught");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException is caught");
+        }
+
+        if (library1 != null) {
+            this.library = library1;
+            loadStaticTaskId();
+        }
+    }
+
+    /**
+     * This Method updates Static field of ToDoTask after the library is deserialized.
+     * During serialization static fields are ignored. Needs to be updated manually.
+     * To find the last ID in the HashMap reduce function is used.
+     * ID can differ from HashMap size value as tasks are added and deleted multiple times during use
+     * */
+
+    private void loadStaticTaskId() {
+        int maxId = library.getAllTasks().keySet().stream()
+        .reduce(0, (a, b) -> Integer.max(a, b));
+        ToDoTask.updateTaskID(maxId);
+    }
+
+    private void saveData() {
+
+        try {
+            FileOutputStream dataLibrary =
+                    new FileOutputStream("library.ser");
+            ObjectOutputStream outDataLibrary = new ObjectOutputStream(dataLibrary);
+            outDataLibrary.writeObject(library);
+            dataLibrary.close();
+            outDataLibrary.close();
+            System.out.println("Library was serialized");
+        } catch (IOException ioe) {
+            System.out.println("IOException is caught");
+            ioe.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Initializing view classes for menu options. These classes are stored in ArrayList for convenience.
+     */
 
     public void addViews() {
         views.add(new MainView());
@@ -19,75 +80,72 @@ class Controller implements Observer {
         views.add(new EditTask());
         views.add(new ChangeStatus());
         views.add(new DeleteTask());
-        views.add(new SelectProject());
+        views.add(new FilterByProject());
         views.add(new ReassignProject());
     }
 
+    private void startView(ViewSuperClass view) {
+        view.addObserver(this);
+        view.getLibrary(library);
+        view.display();
+        view.readInput();
+    }
+
+    private void generatePause() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+
+        }
+    }
 
     public void start() {
         view = views.get(0);
-        view.addObserver(this);
-        view.display();
-        view.readInput();
-
+        startView(view);
     }
 
-    public void callCreateTask() {
+    private void callCreateTask() {
         view = views.get(1);
-        view.addObserver(this);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
-    public void callAssignTask() {
+    /**
+     * This method is calling corresponding view Class to display instructions for the user and read the users input.
+     * First retrieving initialized view object from ArrayList
+     * Passing Library value to View class in order to display current list of ToDoTasks.
+     */
+
+    private void callAssignProject() {
         view = views.get(2);
-        view.addObserver(this);
-        ((AssignProject) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
-    public void callEditTask() {
+    private void callEditTask() {
         view = views.get(3);
-        view.addObserver(this);
-        ((EditTask) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
 
-    public void callChangeTaskStatus() {
+    private void callChangeTaskStatus() {
         view = views.get(4);
-        view.addObserver(this);
-        ((ChangeStatus) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
-    public void CallDeleteTask() {
+    private void CallDeleteTask() {
         view = views.get(5);
-        view.addObserver(this);
-        ((DeleteTask) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
-    public void callSelectProject() {
+    private void callFilterByProject() {
         view = views.get(6);
-        view.addObserver(this);
-        ((SelectProject) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        startView(view);
     }
 
-    public void callReassignProject() {
+    private void callReassignProject() {
         view = views.get(7);
-        view.addObserver(this);
-        ((ReassignProject) view).getLibrary(library);
-        view.display();
-        view.readInput();
+        ((ReassignProject) view).sendInput();
+        startView(view);
     }
-
 
     @Override
     public void update(Observable sender, Object arg) {
@@ -104,7 +162,7 @@ class Controller implements Observer {
                     callCreateTask();
                     break;
                 case 1:
-                    callAssignTask();
+                    callAssignProject();
                     break;
                 case 2:
                     callEditTask();
@@ -117,66 +175,78 @@ class Controller implements Observer {
                     break;
                 case 5:
                     library.printList();
+                    generatePause();
                     start();
                     break;
                 case 6:
                     library.sortByDueDate();
+                    generatePause();
                     start();
                     break;
                 case 7:
-                    callSelectProject();
+                    callFilterByProject();
                     break;
                 case 8:
                     callReassignProject();
                     break;
                 case 9:
-                   //saveDataQuit();
+                   saveData();
+
                     break;
 
             }
 
         } else if (menuType == 1) {
             ToDoTask newTask = new ToDoTask((String) inputData.get("newTaskTitle"),
-                    (String) inputData.get("newTaskDetails"),
-                    (LocalDate) inputData.get("newDueDate"));
+                    (String) inputData.get("newTaskDetails"), (LocalDate) inputData.get("newDueDate"));
             library.addTask(newTask);
-            System.out.println("Your task is created.");
+            generatePause();
             start();
+
         } else if (menuType == 2) {
             library.assignTaskToProject((ToDoTask) inputData.get("selectedTask"), (String) inputData.get("projectName"));
+            generatePause();
             start();
+
         } else if (menuType == 3) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskTitle((String) inputData.get("editedTaskTitle"));
-            System.out.println("You have changed task's title " + task.getTaskTitle());
+            generatePause();
             start();
+
         } else if (menuType == 4) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskDueDate((LocalDate) inputData.get("editedTaskDueDate"));
-            System.out.println("You have changed task's due date " + task.getTaskDueDate());
+            generatePause();
             start();
+
         } else if (menuType == 5) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
-            task.setTaskTitle((String) inputData.get("editedTaskDetails"));
-            System.out.println("You have changed task's details " + task.getTaskDetails());
+            task.setTaskDetails((String) inputData.get("editedTaskDetails"));
+            generatePause();
             start();
+
         } else if (menuType == 6) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToChange");
             task.changeTaskStatus();
-            System.out.println("You have changed task's status");
+            generatePause();
             start();
+
         } else if (menuType == 7) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToDelete");
             library.deleteTask(task);
-            System.out.println("You have deleted a task");
+            generatePause();
             start();
         }
         else if (menuType == 8) {
             library.sortByProject((String) inputData.get("selectedProject"));
+            generatePause();
             start();
+
         } else if (menuType == 9) {
             library.reassignTasksProject((ToDoTask) inputData.get("selectedTaskToReassign"),
                     (String) inputData.get("oldProjectName"), (String) inputData.get("newProjectName"));
+            generatePause();
             start();
         }
 

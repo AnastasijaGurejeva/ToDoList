@@ -1,7 +1,5 @@
 package ToDoList;
 
-import java.util.Map;
-
 public class MainView extends ViewSuperClass {
     public MainView() {
         super("MAIN MENU",
@@ -29,7 +27,6 @@ public class MainView extends ViewSuperClass {
     @Override
     public void readInput() {
         int menuChoice = readIntegerInput();
-        Map<String, Object> inputData = getInputData();
         inputData.put("menuType" , 0);
         inputData.put("menuChoice" , menuChoice);
         setChanged();

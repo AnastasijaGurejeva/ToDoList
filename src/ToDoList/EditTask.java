@@ -2,34 +2,26 @@ package ToDoList;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 
 public class EditTask extends ViewSuperClass {
 
-
-    private Library lib;
-    private Map<String, Object> inputData = getInputData();
 
     public EditTask() {
         super("TASK MENU",
                 "Please select the task you want to edit by typing task's No ");
     }
 
-    public void getLibrary(Library library) {
-        lib = library;
-    }
-
 
     @Override
     public void display() {
         super.printUserInterface();
-        lib.printList();
+        passedLibraryData.printList();
 
     }
 
     @Override
     public void readInput() {
-        HashMap<Integer, ToDoTask> allTasks = lib.getAllTasks();
+        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
         ToDoTask selectedTaskToEdit;
         Integer id;
         while (true) {
@@ -47,7 +39,7 @@ public class EditTask extends ViewSuperClass {
                 "\n 1 - To edit task's due date" +
                 "\n 2 - To edit task's details");
 
-        Map<String, Object> inputData = getInputData();
+
         int menuChoice = readIntegerInput();
         switch (menuChoice) {
             case 0:

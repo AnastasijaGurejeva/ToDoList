@@ -1,5 +1,6 @@
 package ToDoList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
 *   assigned to different Projects.
  */
 
-public class Project {
+public class Project implements Serializable {
     private String projectName;
     private List<Integer> listOfTasksID;
 
@@ -19,10 +20,6 @@ public class Project {
 
     public String getProjectName() {
         return projectName;
-    }
-
-    public void renameProject(String projectName) {
-        this.projectName = projectName;
     }
 
     public void addTaskToProject(Integer taskID) {

@@ -1,11 +1,8 @@
 package ToDoList;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class DeleteTask extends ViewSuperClass {
-    private Library lib;
-
 
     public DeleteTask() {
         super("LIST OF YOUR TASKS",
@@ -13,22 +10,18 @@ public class DeleteTask extends ViewSuperClass {
                         "by typing task's No ");
     }
 
-    public void getLibrary(Library library) {
-        lib = library;
-    }
-
 
     @Override
     public void display() {
         super.printUserInterface();
-        lib.printList();
+        passedLibraryData.printList();
     }
 
 
     @Override
     public void readInput() {
 
-        HashMap<Integer, ToDoTask> allTasks = lib.getAllTasks();
+        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
         ToDoTask selectedTask;
         Integer id;
         while (true) {
@@ -41,7 +34,7 @@ public class DeleteTask extends ViewSuperClass {
             }
         }
 
-        Map<String, Object> inputData = getInputData();
+
         inputData.put("menuType", 7);
         inputData.put("selectedTaskToDelete", selectedTask);
         setChanged();

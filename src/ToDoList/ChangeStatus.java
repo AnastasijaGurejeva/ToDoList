@@ -1,12 +1,8 @@
 package ToDoList;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ChangeStatus extends ViewSuperClass {
-
-
-    private Library lib;
 
 
     public ChangeStatus() {
@@ -15,22 +11,18 @@ public class ChangeStatus extends ViewSuperClass {
                         "by typing task's No ");
     }
 
-    public void getLibrary(Library library) {
-        lib = library;
-    }
-
 
     @Override
     public void display() {
         super.printUserInterface();
-        lib.printList();
+        passedLibraryData.printList();
     }
 
 
     @Override
     public void readInput() {
 
-        HashMap<Integer, ToDoTask> allTasks = lib.getAllTasks();
+        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
         ToDoTask selectedTask;
         Integer id;
         while (true) {
@@ -43,7 +35,6 @@ public class ChangeStatus extends ViewSuperClass {
             }
         }
 
-        Map<String, Object> inputData = getInputData();
         inputData.put("menuType", 6);
         inputData.put("selectedTaskToChange", selectedTask);
         setChanged();

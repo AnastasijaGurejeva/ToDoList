@@ -1,15 +1,15 @@
-package ToDoList;
+package ToDoList ;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ToDoTask {
+public class ToDoTask implements Serializable {
     private String taskTitle;
     private String taskDetails;
     private boolean taskStatus;
     private int taskID;
     private LocalDate taskDueDate;
     private static int countID = 0;
-
 
 
     public ToDoTask(String taskTitle, String taskDetails, LocalDate taskDueDate) {
@@ -21,12 +21,16 @@ public class ToDoTask {
         taskID = this.countID;
     }
 
-    public ToDoTask(String taskTitle, LocalDate taskDueDate) {
-        this (taskTitle, "", taskDueDate);
-    }
-
     public int getTaskID() {
         return taskID;
+    }
+
+    /**
+     * This method is used to set static ID field after deserialization.
+     */
+
+    static public void updateTaskID(int iD ) {
+        countID = iD;
     }
 
     public String getTaskTitle() {
@@ -42,11 +46,7 @@ public class ToDoTask {
     }
 
     public void setTaskDueDate(LocalDate newTaskDueDate) {
-        if (taskDueDate.isAfter(LocalDate.now())) {
-            this.taskDueDate = taskDueDate;
-        } else {
-            System.out.println("The date is set before today's date");
-        }
+            this.taskDueDate = newTaskDueDate;
     }
 
     public String getTaskDetails() {

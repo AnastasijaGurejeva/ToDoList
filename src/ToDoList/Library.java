@@ -1,8 +1,9 @@
 package ToDoList;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Library {
+public class Library implements Serializable {
     private HashMap<Integer, ToDoTask> allTasks;
     private HashMap<String, Project> allProjects;
 
@@ -11,10 +12,19 @@ public class Library {
         allProjects = new HashMap<>();
     }
 
-    //when task is created it is added to allTasks table;
+    /**
+     * when a task is created it is added to allTasks HashMap;
+     * @param newTask
+     */
+
     public void addTask(ToDoTask newTask) {
         allTasks.put(newTask.getTaskID(), newTask);
     }
+
+    /**
+     * when a new Project is assigned to the task, it is added to allProjects HashMap;
+     * @param newProject
+     */
 
     private void addProject(Project newProject) {
         allProjects.put(newProject.getProjectName(), newProject);
@@ -23,24 +33,24 @@ public class Library {
     public HashMap<Integer, ToDoTask> getAllTasks(){
         return allTasks;
     }
+
     public HashMap<String, Project> getAllProjects(){
         return allProjects;
     }
 
-
     private boolean ifProjectExist(String projectName) {
-        Set<String> keys = allProjects.keySet();
-        for (String key : keys) {
-            if (projectName.equals(key)) {
-                return true;
-            }
-        }
+        if (allProjects.containsKey(projectName)) {
+        return true;
+        } else
         return false;
     }
 
-
-    //task ID is given to a project List.
-    // If project doesn't exists, it is created automatically and added to a allProjects Table
+    /**
+     * task ID is is passed to a Project ArrayList.
+     * when a new Project is assigned to the task, it is added to allProjects HashMap;
+     * @param task ToDoTask we want to assign to the Project
+     * @param projectName Existing or new Project Name
+     */
 
     public void assignTaskToProject(ToDoTask task, String projectName) {
         if (ifProjectExist(projectName)) {
@@ -52,18 +62,22 @@ public class Library {
         }
     }
 
-    public void reassignTasksProject(ToDoTask task, String projectName, String newProjectName) {
-        assignTaskToProject(task, newProjectName);
-        removeTaskFromProject(task, projectName);
-    }
 
     private void removeTaskFromProject(ToDoTask task, String projectName) {
         Integer taskID = task.getTaskID();
         allProjects.get(projectName).removeTaskByID(taskID);
     }
 
-    // Deletes task from all Task collection and
-    // all Id of this task from projects containing the task
+    public void reassignTasksProject(ToDoTask task, String projectName, String newProjectName) {
+        assignTaskToProject(task, newProjectName);
+        removeTaskFromProject(task, projectName);
+    }
+
+    /**
+     * Task is deleted from all tasks HashMap.
+     * Tasks ID is removed from Project's ArrayList.
+     * All project are checked if containing particular task ID, as it is allowed to assign one task to few Projects
+     */
 
     public void deleteTask(ToDoTask task) {
         int taskId = task.getTaskID();
@@ -76,10 +90,10 @@ public class Library {
     }
 
 
-    public String constructDetails(ToDoTask task) {
-        return "No: " + task.getTaskID() + " Task Title: " + task.getTaskTitle().toUpperCase() + "\n \t Task details: "
-                + task.getTaskDetails() + "\n \t Due date: " + task.getTaskDueDate()
-                + "\n \t Task status: " + task.taskStatus();
+    private String constructDetails(ToDoTask task) {
+        return "No: " + task.getTaskID() + " Task Title: " + task.getTaskTitle().toUpperCase() + "\t \t  Task details: "
+                + task.getTaskDetails() + "\n \t  Due date: " + task.getTaskDueDate()
+                + "\t  Task status: " + task.taskStatus();
     }
 
     public void printList() {

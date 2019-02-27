@@ -1,11 +1,9 @@
 package ToDoList;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class CreateTask extends ViewSuperClass {
 
-    private Map<String, Object> inputData = getInputData();
 
     public CreateTask() {
         super("CREATE A NEW TASK",
@@ -27,8 +25,7 @@ public class CreateTask extends ViewSuperClass {
         System.out.println("Please enter a Title of your task");
         String taskTitle = readStringInput();
 
-        System.out.println("Please enter a description of your task. \n" +
-                "(Press press space and enter to leave it empty. You can always edit it later)");
+        System.out.println("Please enter a details of your task");
         String taskDetails = readStringInput();
 
         System.out.println("Please enter a due date of your task in format: (d/MM/yyyy)");

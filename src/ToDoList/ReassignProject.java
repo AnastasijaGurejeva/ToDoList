@@ -1,42 +1,45 @@
 package ToDoList;
 
-import java.util.*;
-
 public class ReassignProject extends ViewSuperClass {
-
-    private Library lib;
-    private Scanner scanner = new Scanner(System.in);
+    private String projectName;
+    private ToDoTask selectedTask;
+    private String newProjectName;
 
     public ReassignProject() {
         super("LIST OF YOUR PROJECTS",
-                "Please enter the name of existing Project from the list below: ");
-    }
-
-    public void getLibrary(Library library) {
-
-        lib = library;
+                "Please enter the name of existing Project from the list below: \n");
     }
 
 
     @Override
     public void display() {
         super.printUserInterface();
-        lib.getAllProjects().keySet().stream()
+        passedLibraryData.getAllProjects().keySet().stream()
                 .forEach(k -> System.out.println(k));
+    }
+
+    public void displayTasksByProject() {
+        if (!passedLibraryData.getAllProjects().isEmpty()) {
+            System.out.println("Please select the task you want to reassign by typing task's No ");
+            passedLibraryData.sortByProject(projectName);
+        } else {
+            System.out.println("This project is Empty");
+            display();
+        }
+    }
+
+    public void displayAdditionalInstruction() {
+        System.out.println("Please enter the new Project's name for this task: ");
     }
 
 
     @Override
     public void readInput() {
-        Map<String, Object> inputData = getInputData();
-        inputData.put("menuType", 9);
 
-        Set<String> keys = lib.getAllProjects().keySet();
-        String projectName;
         while (true) {
-            projectName = readStringInput();
-            if (keys.contains(projectName)) {
-                inputData.put("oldProjectName", projectName);
+            String inputProjectName = readStringInput();
+            if (passedLibraryData.getAllProjects().containsKey(inputProjectName)) {
+                this.projectName = inputProjectName;
                 break;
             } else {
                 System.out.println("Project doesn't exist. " +
@@ -44,34 +47,34 @@ public class ReassignProject extends ViewSuperClass {
             }
         }
 
-        System.out.println("Please select the task you want to reassign by typing task's No ");
-        lib.printList();
 
-        lib.sortByProject(projectName);
+        displayTasksByProject();
 
-        HashMap<Integer, ToDoTask> allTasks = lib.getAllTasks();
-        ToDoTask selectedTask;
         Integer id;
         while (true) {
             id = readIntegerInput();
-            if (allTasks.containsKey(id)) {
-                selectedTask = allTasks.get(id);
+            if (passedLibraryData.getAllTasks().containsKey(id)) {
+                this.selectedTask = passedLibraryData.getAllTasks().get(id);
                 break;
             } else {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
 
+        displayAdditionalInstruction();
+        newProjectName = readStringInput();
 
-        System.out.println("Please enter the new Project's name for this task: ");
-        String newProjectName = readStringInput();
+    }
 
-
+    public void sendInput() {
+        inputData.put("menuType", 9);
+        inputData.put("oldProjectName", projectName);
         inputData.put("selectedTaskToReassign", selectedTask);
         inputData.put("newProjectName", newProjectName);
         setChanged();
         notifyObservers(inputData);
     }
 }
+
 
 
