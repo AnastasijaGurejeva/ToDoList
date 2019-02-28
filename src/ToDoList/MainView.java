@@ -1,6 +1,9 @@
 package ToDoList;
 
 public class MainView extends ViewSuperClass {
+
+    private int menuChoice;
+
     public MainView() {
         super("MAIN MENU",
                 "Select an option from the menu below: ");
@@ -26,10 +29,15 @@ public class MainView extends ViewSuperClass {
 
     @Override
     public void readInput() {
-        int menuChoice = readIntegerInput();
+        menuChoice = readIntegerInput();
+    }
+
+    @Override
+    public void sendInput() {
         inputData.put("menuType" , 0);
         inputData.put("menuChoice" , menuChoice);
         setChanged();
         notifyObservers(inputData);
+
     }
 }

@@ -30,6 +30,8 @@ public abstract class ViewSuperClass extends Observable {
 
     abstract public void display();
     abstract public void readInput();
+    abstract public void sendInput();
+
 
 
     public int readIntegerInput() {

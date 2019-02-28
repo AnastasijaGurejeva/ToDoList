@@ -3,6 +3,9 @@ package ToDoList;
 import java.time.LocalDate;
 
 public class CreateTask extends ViewSuperClass {
+    private String taskTitle;
+    private String taskDetails;
+    private LocalDate taskDueDate;
 
 
     public CreateTask() {
@@ -19,25 +22,25 @@ public class CreateTask extends ViewSuperClass {
 
     @Override
     public void readInput() {
-        inputData.put("menuType" , 1);
-
 
         System.out.println("Please enter a Title of your task");
-        String taskTitle = readStringInput();
+        taskTitle = readStringInput();
 
         System.out.println("Please enter a details of your task");
-        String taskDetails = readStringInput();
+        taskDetails = readStringInput();
 
         System.out.println("Please enter a due date of your task in format: (d/MM/yyyy)");
-        LocalDate taskDueDate = readDateInput();
+        taskDueDate = readDateInput();
 
+    }
 
+    @Override
+    public void sendInput() {
+        inputData.put("menuType" , 1);
         inputData.put("newTaskTitle" , taskTitle);
         inputData.put("newTaskDetails" , taskDetails);
         inputData.put("newDueDate" , taskDueDate);
         setChanged();
         notifyObservers(inputData);
     }
-
-
 }

@@ -49,7 +49,6 @@ public class ReassignProject extends ViewSuperClass {
 
 
         displayTasksByProject();
-
         Integer id;
         while (true) {
             id = readIntegerInput();

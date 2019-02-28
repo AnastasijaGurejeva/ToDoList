@@ -1,14 +1,14 @@
 package ToDoList;
 
-import java.util.*;
-
 public class AssignProject extends ViewSuperClass {
+
+    private ToDoTask selectedTask;
+    private String projectName;
 
     public AssignProject() {
         super("LIST OF YOUR TASKS",
                 "Please select the task by typing task's No ");
     }
-
 
     @Override
     public void display() {
@@ -24,27 +24,24 @@ public class AssignProject extends ViewSuperClass {
                 .forEach(k-> System.out.println(k));
     }
 
-
     @Override
     public void readInput() {
-
-        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
-        ToDoTask selectedTask;
         Integer id;
         while (true) {
             id = readIntegerInput();
-            if (allTasks.containsKey(id)) {
-                selectedTask = allTasks.get(id);
+            if (passedLibraryData.getAllTasks().containsKey(id)) {
+                selectedTask = passedLibraryData.getAllTasks().get(id);
                 break;
             } else {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
-
         displayTasks();
-        String projectName = readStringInput();
+        projectName = readStringInput();
+    }
 
-
+    @Override
+    public void sendInput() {
         inputData.put("menuType" , 2);
         inputData.put("selectedTask" , selectedTask);
         inputData.put("projectName" , projectName);

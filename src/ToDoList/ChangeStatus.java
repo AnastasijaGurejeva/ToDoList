@@ -1,9 +1,8 @@
 package ToDoList;
 
-import java.util.HashMap;
-
 public class ChangeStatus extends ViewSuperClass {
 
+    private ToDoTask selectedTask;
 
     public ChangeStatus() {
         super("LIST OF YOUR TASKS",
@@ -21,20 +20,20 @@ public class ChangeStatus extends ViewSuperClass {
 
     @Override
     public void readInput() {
-
-        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
-        ToDoTask selectedTask;
         Integer id;
         while (true) {
             id = readIntegerInput();
-            if (allTasks.containsKey(id)) {
-                selectedTask = allTasks.get(id);
+            if (passedLibraryData.getAllTasks().containsKey(id)) {
+                selectedTask = passedLibraryData.getAllTasks().get(id);
                 break;
             } else {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
+    }
 
+    @Override
+    public void sendInput() {
         inputData.put("menuType", 6);
         inputData.put("selectedTaskToChange", selectedTask);
         setChanged();

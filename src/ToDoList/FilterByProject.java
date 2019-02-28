@@ -1,6 +1,7 @@
 package ToDoList;
 
 public class FilterByProject extends ViewSuperClass {
+    private String selectedProject;
 
     public FilterByProject() {
         super("LIST OF YOUR PROJECTS",
@@ -14,13 +15,15 @@ public class FilterByProject extends ViewSuperClass {
         passedLibraryData.getAllProjects().keySet().stream()
                 .forEach(k -> System.out.println(k));
 
-
     }
-
 
     @Override
     public void readInput() {
-        String selectedProject = readStringInput();
+        selectedProject = readStringInput();
+    }
+
+    @Override
+    public void sendInput() {
         inputData.put("menuType", 8);
         inputData.put("selectedProject", selectedProject);
         setChanged();

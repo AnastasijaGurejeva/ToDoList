@@ -1,9 +1,13 @@
 package ToDoList;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 public class EditTask extends ViewSuperClass {
+
+    private ToDoTask selectedTaskToEdit;
+    private String editedTaskTitle;
+    private String editedTaskDetails;
+    private LocalDate editedTaskDueDate;
 
 
     public EditTask() {
@@ -11,66 +15,78 @@ public class EditTask extends ViewSuperClass {
                 "Please select the task you want to edit by typing task's No ");
     }
 
-
     @Override
     public void display() {
         super.printUserInterface();
         passedLibraryData.printList();
+    }
 
+
+    public void displaySubMenu() {
+        System.out.println("\n Press:" +
+                "\n 0 - To edit task's title" +
+                "\n 1 - To edit task's due date" +
+                "\n 2 - To edit task's details");
     }
 
     @Override
     public void readInput() {
-        HashMap<Integer, ToDoTask> allTasks = passedLibraryData.getAllTasks();
-        ToDoTask selectedTaskToEdit;
+
         Integer id;
         while (true) {
             id = readIntegerInput();
-            if (allTasks.containsKey(id)) {
-                selectedTaskToEdit = allTasks.get(id);
+            if (passedLibraryData.getAllTasks().containsKey(id)) {
+                selectedTaskToEdit = passedLibraryData.getAllTasks().get(id);
                 break;
             } else {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
 
-        System.out.println("\n Press:" +
-                "\n 0 - To edit task's title" +
-                "\n 1 - To edit task's due date" +
-                "\n 2 - To edit task's details");
-
+        displaySubMenu();
 
         int menuChoice = readIntegerInput();
         switch (menuChoice) {
             case 0:
                 System.out.println("Please enter a new Title of your task");
-                String editedTaskTitle = readStringInput();
-                inputData.put("selectedTaskToEdit" , selectedTaskToEdit);
-                inputData.put("editedTaskTitle", editedTaskTitle);
-                inputData.put("menuType" , 3);
-                setChanged();
-                notifyObservers(inputData);
+                editedTaskTitle = readStringInput();
+                sendInput();
                 break;
             case 1:
                 System.out.println("Please enter a new due date of your task in format: (d/MM/yyyy)");
-                LocalDate editedTaskDueDate = readDateInput();
-                inputData.put("selectedTaskToEdit" , selectedTaskToEdit);
-                inputData.put("editedTaskDueDate", editedTaskDueDate);
-                inputData.put("menuType" , 4);
-                setChanged();
-                notifyObservers(inputData);
+                editedTaskDueDate = readDateInput();
+                sendInput1();
                 break;
             case 2:
                 System.out.println("Please enter a new details of your task");
-                String editedTaskDetails = readStringInput();
-                inputData.put("selectedTaskToEdit" , selectedTaskToEdit);
-                inputData.put("editedTaskDetails", editedTaskDetails);
-                inputData.put("menuType" , 5);
-                setChanged();
-                notifyObservers(inputData);
+                editedTaskDetails = readStringInput();
+                sendInput2();
                 break;
         }
+    }
 
+        public void sendInput() {
+            inputData.put("menuType", 3);
+            inputData.put("selectedTaskToEdit" , selectedTaskToEdit);
+            inputData.put("editedTaskTitle", editedTaskTitle);
+            setChanged();
+            notifyObservers(inputData);
+
+    }
+     public void sendInput1() {
+        inputData.put("menuType", 4);
+        inputData.put("selectedTaskToEdit", selectedTaskToEdit);
+        inputData.put("editedTaskDueDate", editedTaskDueDate);
+        setChanged();
+        notifyObservers(inputData);
+
+    }
+    public void sendInput2() {
+        inputData.put("menuType", 5);
+        inputData.put("selectedTaskToEdit", selectedTaskToEdit);
+        inputData.put("editedTaskDetails", editedTaskDetails);
+        setChanged();
+        notifyObservers(inputData);
     }
 
 }

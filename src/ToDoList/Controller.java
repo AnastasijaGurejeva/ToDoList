@@ -89,6 +89,7 @@ class Controller implements Observer {
         view.getLibrary(library);
         view.display();
         view.readInput();
+        view.sendInput();
     }
 
     private void generatePause() {
