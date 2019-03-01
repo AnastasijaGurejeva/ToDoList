@@ -29,7 +29,6 @@ public class DeleteTask extends ViewSuperClass {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
-
     }
 
     @Override
@@ -38,7 +37,11 @@ public class DeleteTask extends ViewSuperClass {
         inputData.put("selectedTaskToDelete", selectedTask);
         setChanged();
         notifyObservers(inputData);
+    }
 
+    @Override
+    public void notification() {
+        System.out.println("Your task was deleted");
     }
 }
 

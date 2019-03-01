@@ -24,10 +24,10 @@ public class CreateTask extends ViewSuperClass {
     public void readInput() {
 
         System.out.println("Please enter a Title of your task");
-        taskTitle = readStringInput();
+        taskTitle = scanner.nextLine();
 
         System.out.println("Please enter a details of your task");
-        taskDetails = readStringInput();
+        taskDetails = scanner.nextLine();
 
         System.out.println("Please enter a due date of your task in format: (d/MM/yyyy)");
         taskDueDate = readDateInput();
@@ -42,5 +42,10 @@ public class CreateTask extends ViewSuperClass {
         inputData.put("newDueDate" , taskDueDate);
         setChanged();
         notifyObservers(inputData);
+    }
+
+    @Override
+    public void notification() {
+        System.out.println("New task was created");
     }
 }

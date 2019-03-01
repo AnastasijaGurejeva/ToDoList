@@ -91,9 +91,9 @@ public class Library implements Serializable {
 
 
     private String constructDetails(ToDoTask task) {
-        return "No: " + task.getTaskID() + " Task Title: " + task.getTaskTitle().toUpperCase() + "\t \t  Task details: "
+        return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\t \t \t  Task details: "
                 + task.getTaskDetails() + "\n \t  Due date: " + task.getTaskDueDate()
-                + "\t  Task status: " + task.taskStatus();
+                + "\t \t  Task status: " + task.taskStatus();
     }
 
     public void printList() {
@@ -103,7 +103,6 @@ public class Library implements Serializable {
 
     public void sortByProject(String projectName) {
         if (ifProjectExist(projectName)) {
-            System.out.println("Task of project: " + projectName );
             List<Integer> tasksID = allProjects.get(projectName).getListOfTasks();
             tasksID.stream()
                     .map(key -> allTasks.get(key))

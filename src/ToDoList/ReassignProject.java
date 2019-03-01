@@ -15,10 +15,10 @@ public class ReassignProject extends ViewSuperClass {
     public void display() {
         super.printUserInterface();
         passedLibraryData.getAllProjects().keySet().stream()
-                .forEach(k -> System.out.println(k));
+                .forEach(k -> System.out.println(k.toUpperCase()));
     }
 
-    public void displayTasksByProject() {
+    private void displayTasksByProject() {
         if (!passedLibraryData.getAllProjects().isEmpty()) {
             System.out.println("Please select the task you want to reassign by typing task's No ");
             passedLibraryData.sortByProject(projectName);
@@ -28,7 +28,7 @@ public class ReassignProject extends ViewSuperClass {
         }
     }
 
-    public void displayAdditionalInstruction() {
+    private void displayAdditionalInstruction() {
         System.out.println("Please enter the new Project's name for this task: ");
     }
 
@@ -37,7 +37,7 @@ public class ReassignProject extends ViewSuperClass {
     public void readInput() {
 
         while (true) {
-            String inputProjectName = readStringInput();
+            String inputProjectName = scanner.nextLine();
             if (passedLibraryData.getAllProjects().containsKey(inputProjectName)) {
                 this.projectName = inputProjectName;
                 break;
@@ -46,7 +46,6 @@ public class ReassignProject extends ViewSuperClass {
                         "\nPlease enter the existing Project's name this task belonged to: ");
             }
         }
-
 
         displayTasksByProject();
         Integer id;
@@ -59,10 +58,9 @@ public class ReassignProject extends ViewSuperClass {
                 System.out.println("Please enter a valid number of Selected task");
             }
         }
-
         displayAdditionalInstruction();
-        newProjectName = readStringInput();
-
+        scanner.nextLine();
+        newProjectName = scanner.nextLine();
     }
 
     public void sendInput() {
@@ -72,6 +70,11 @@ public class ReassignProject extends ViewSuperClass {
         inputData.put("newProjectName", newProjectName);
         setChanged();
         notifyObservers(inputData);
+    }
+
+    @Override
+    public void notification() {
+        System.out.println("Your task was reassigned to a different project");
     }
 }
 

@@ -22,7 +22,7 @@ public class EditTask extends ViewSuperClass {
     }
 
 
-    public void displaySubMenu() {
+    private void displaySubMenu() {
         System.out.println("\n Press:" +
                 "\n 0 - To edit task's title" +
                 "\n 1 - To edit task's due date" +
@@ -49,31 +49,34 @@ public class EditTask extends ViewSuperClass {
         switch (menuChoice) {
             case 0:
                 System.out.println("Please enter a new Title of your task");
-                editedTaskTitle = readStringInput();
-                sendInput();
+                scanner.nextLine();
+                editedTaskTitle = scanner.nextLine();
                 break;
             case 1:
                 System.out.println("Please enter a new due date of your task in format: (d/MM/yyyy)");
+                scanner.nextLine();
                 editedTaskDueDate = readDateInput();
                 sendInput1();
                 break;
             case 2:
                 System.out.println("Please enter a new details of your task");
-                editedTaskDetails = readStringInput();
+                scanner.nextLine();
+                editedTaskDetails = scanner.nextLine();
                 sendInput2();
                 break;
         }
     }
 
-        public void sendInput() {
-            inputData.put("menuType", 3);
-            inputData.put("selectedTaskToEdit" , selectedTaskToEdit);
-            inputData.put("editedTaskTitle", editedTaskTitle);
-            setChanged();
-            notifyObservers(inputData);
+    public void sendInput() {
+        inputData.put("menuType", 3);
+        inputData.put("selectedTaskToEdit", selectedTaskToEdit);
+        inputData.put("editedTaskTitle", editedTaskTitle);
+        setChanged();
+        notifyObservers(inputData);
 
     }
-     public void sendInput1() {
+
+    private void sendInput1() {
         inputData.put("menuType", 4);
         inputData.put("selectedTaskToEdit", selectedTaskToEdit);
         inputData.put("editedTaskDueDate", editedTaskDueDate);
@@ -81,12 +84,18 @@ public class EditTask extends ViewSuperClass {
         notifyObservers(inputData);
 
     }
-    public void sendInput2() {
+
+    private void sendInput2() {
         inputData.put("menuType", 5);
         inputData.put("selectedTaskToEdit", selectedTaskToEdit);
         inputData.put("editedTaskDetails", editedTaskDetails);
         setChanged();
         notifyObservers(inputData);
+    }
+
+    @Override
+    public void notification() {
+        System.out.println("Your task was edited");
     }
 
 }

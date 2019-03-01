@@ -17,7 +17,6 @@ class Controller implements Observer {
 
 
     public void loadDataLibrary() {
-
         Library library1 = new Library();
         try {
             FileInputStream dataLibrary = new FileInputStream("library.ser");
@@ -53,7 +52,6 @@ class Controller implements Observer {
     }
 
     private void saveData() {
-
         try {
             FileOutputStream dataLibrary =
                     new FileOutputStream("library.ser");
@@ -66,7 +64,6 @@ class Controller implements Observer {
             System.out.println("IOException is caught");
             ioe.printStackTrace();
         }
-
     }
 
     /**
@@ -94,9 +91,15 @@ class Controller implements Observer {
 
     private void generatePause() {
         try {
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.MILLISECONDS.sleep(400);
         } catch (InterruptedException e) {
+        }
+    }
 
+    private void generatePauseAfterPrintingList() {
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
         }
     }
 
@@ -126,7 +129,6 @@ class Controller implements Observer {
         startView(view);
     }
 
-
     private void callChangeTaskStatus() {
         view = views.get(4);
         startView(view);
@@ -144,7 +146,6 @@ class Controller implements Observer {
 
     private void callReassignProject() {
         view = views.get(7);
-        ((ReassignProject) view).sendInput();
         startView(view);
     }
 
@@ -176,12 +177,12 @@ class Controller implements Observer {
                     break;
                 case 5:
                     library.printList();
-                    generatePause();
+                    generatePauseAfterPrintingList();
                     start();
                     break;
                 case 6:
                     library.sortByDueDate();
-                    generatePause();
+                    generatePauseAfterPrintingList();
                     start();
                     break;
                 case 7:
@@ -201,52 +202,60 @@ class Controller implements Observer {
             ToDoTask newTask = new ToDoTask((String) inputData.get("newTaskTitle"),
                     (String) inputData.get("newTaskDetails"), (LocalDate) inputData.get("newDueDate"));
             library.addTask(newTask);
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 2) {
             library.assignTaskToProject((ToDoTask) inputData.get("selectedTask"), (String) inputData.get("projectName"));
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 3) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskTitle((String) inputData.get("editedTaskTitle"));
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 4) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskDueDate((LocalDate) inputData.get("editedTaskDueDate"));
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 5) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskDetails((String) inputData.get("editedTaskDetails"));
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 6) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToChange");
             task.changeTaskStatus();
+            view.notification();
             generatePause();
             start();
 
         } else if (menuType == 7) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToDelete");
             library.deleteTask(task);
+            view.notification();
             generatePause();
             start();
-        }
-        else if (menuType == 8) {
+
+        } else if (menuType == 8) {
             library.sortByProject((String) inputData.get("selectedProject"));
-            generatePause();
+            generatePauseAfterPrintingList();
             start();
 
         } else if (menuType == 9) {
             library.reassignTasksProject((ToDoTask) inputData.get("selectedTaskToReassign"),
                     (String) inputData.get("oldProjectName"), (String) inputData.get("newProjectName"));
+            view.notification();
             generatePause();
             start();
         }

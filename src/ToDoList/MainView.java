@@ -17,7 +17,7 @@ public class MainView extends ViewSuperClass {
                 "\n 0 - To add a new Task" +
                 "\n 1 - To assign existing task to the project" +
                 "\n 2 - To edit task" +
-                "\n 3 - To mark task as done" +
+                "\n 3 - To mark task as done/not done" +
                 "\n 4 - To delete task" +
                 "\n 5 - To view all tasks" +
                 "\n 6 - To sort tasks by due date" +
@@ -39,5 +39,9 @@ public class MainView extends ViewSuperClass {
         setChanged();
         notifyObservers(inputData);
 
+    }
+
+    @Override
+    public void notification() {
     }
 }

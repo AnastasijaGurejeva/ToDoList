@@ -16,12 +16,12 @@ public class AssignProject extends ViewSuperClass {
         passedLibraryData.printList();
     }
 
-    public void displayTasks() {
+    private void displayTasks() {
         System.out.println("LIST OF YOUR PROJECTS");
-        System.out.println("Please enter the existing name of the Project for this task or " +
-                "\n type in a new name of the project for your task: ");
+        System.out.println("Please enter the existing name of the Project " +
+                "\nor type in a new name of the project for your task: ");
         passedLibraryData.getAllProjects().keySet().stream()
-                .forEach(k-> System.out.println(k));
+                .forEach(k-> System.out.println(k.toUpperCase()));
     }
 
     @Override
@@ -37,7 +37,8 @@ public class AssignProject extends ViewSuperClass {
             }
         }
         displayTasks();
-        projectName = readStringInput();
+        scanner.nextLine();
+        projectName = scanner.nextLine();
     }
 
     @Override
@@ -47,5 +48,10 @@ public class AssignProject extends ViewSuperClass {
         inputData.put("projectName" , projectName);
         setChanged();
         notifyObservers(inputData);
+    }
+
+    @Override
+    public void notification() {
+        System.out.println("Your task was assigned");
     }
 }

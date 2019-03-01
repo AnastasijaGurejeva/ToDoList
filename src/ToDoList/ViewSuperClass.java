@@ -8,7 +8,7 @@ import java.util.*;
 public abstract class ViewSuperClass extends Observable {
     private String viewTitle;
     private String viewDescription;
-    private Scanner scanner = new Scanner(System.in);
+    protected Scanner scanner = new Scanner(System.in);
     protected Map<String, Object> inputData;
     protected Library passedLibraryData;
 
@@ -31,6 +31,7 @@ public abstract class ViewSuperClass extends Observable {
     abstract public void display();
     abstract public void readInput();
     abstract public void sendInput();
+    abstract public void notification();
 
 
 
@@ -45,13 +46,6 @@ public abstract class ViewSuperClass extends Observable {
                 scanner.nextLine();
             }
         }
-    }
-
-
-    public String readStringInput() {
-        String input = scanner.next();
-        scanner.nextLine();
-        return input;
     }
 
 

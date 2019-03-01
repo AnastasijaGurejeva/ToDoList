@@ -39,5 +39,10 @@ public class ChangeStatus extends ViewSuperClass {
         setChanged();
         notifyObservers(inputData);
     }
+
+    @Override
+    public void notification() {
+        System.out.println("Your task status was changed");
+    }
 }
 

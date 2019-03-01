@@ -5,21 +5,29 @@ public class FilterByProject extends ViewSuperClass {
 
     public FilterByProject() {
         super("LIST OF YOUR PROJECTS",
-                "Please enter the name of the Project for this task or" +
-                        "\n type in the new name for your project: ");
+                "Please enter the name of the existing Project:");
     }
 
     @Override
     public void display() {
         super.printUserInterface();
         passedLibraryData.getAllProjects().keySet().stream()
-                .forEach(k -> System.out.println(k));
+                .forEach(k -> System.out.println(k.toUpperCase()));
 
     }
 
     @Override
     public void readInput() {
-        selectedProject = readStringInput();
+        while (true) {
+            String inputProjectName = scanner.nextLine();
+            if (passedLibraryData.getAllProjects().containsKey(inputProjectName)) {
+                selectedProject = inputProjectName;
+                break;
+            } else {
+                System.out.println("Project doesn't exist. " +
+                        "\nPlease enter the existing Project's name ");
+            }
+        }
     }
 
     @Override
@@ -28,6 +36,11 @@ public class FilterByProject extends ViewSuperClass {
         inputData.put("selectedProject", selectedProject);
         setChanged();
         notifyObservers(inputData);
+    }
+
+    @Override
+    public void notification() {
+        System.out.println("Your tasks displayed by selected project: " + selectedProject);
     }
 }
 
