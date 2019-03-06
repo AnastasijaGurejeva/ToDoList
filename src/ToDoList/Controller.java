@@ -79,6 +79,7 @@ class Controller implements Observer {
         views.add(new DeleteTask());
         views.add(new FilterByProject());
         views.add(new ReassignProject());
+        views.add(new DeleteProject());
     }
 
     private void startView(ViewSuperClass view) {
@@ -149,6 +150,11 @@ class Controller implements Observer {
         startView(view);
     }
 
+    private void callDeleteProject() {
+        view = views.get(8);
+        startView(view);
+    }
+
     @Override
     public void update(Observable sender, Object arg) {
         Map inputData = (Map) arg;
@@ -192,8 +198,10 @@ class Controller implements Observer {
                     callReassignProject();
                     break;
                 case 9:
-                   saveData();
-
+                    callDeleteProject();
+                    break;
+                case 10:
+                    saveData();
                     break;
 
             }
@@ -258,8 +266,20 @@ class Controller implements Observer {
             view.notification();
             generatePause();
             start();
-        }
 
+        } else if (menuType == 10) {
+            library.deleteProject((String) inputData.get("selectedProjectToDelete"));
+            view.notification();
+            generatePause();
+            start();
+
+        } else if (menuType == 11) {
+            library.deleteAllTasksInTheProject((String) inputData.get("selectedProjectToDelete"));
+            library.deleteProject((String) inputData.get("selectedProjectToDelete"));
+            view.notification();
+            generatePause();
+            start();
+        }
     }
 }
 

@@ -89,6 +89,15 @@ public class Library implements Serializable {
         }
     }
 
+    public void deleteProject(String projectName) {
+        allProjects.remove(projectName);
+    }
+
+    public void deleteAllTasksInTheProject(String projectName) {
+        allProjects.get(projectName).getListOfTasks().stream()
+                .forEach(taskId -> allTasks.remove(taskId));
+    }
+
 
     private String constructDetails(ToDoTask task) {
         return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\t \t \t  Task details: "
