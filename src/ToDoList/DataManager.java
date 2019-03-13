@@ -31,7 +31,7 @@ public class DataManager implements Serializable {
      * @param newProject
      */
 
-    private void addProject(Project newProject) {
+    public void addProject(Project newProject) {
         allProjects.put(newProject.getProjectName(), newProject);
     }
 
@@ -56,16 +56,16 @@ public class DataManager implements Serializable {
 
     public void assignTaskToProject(ToDoTask task, String projectName) {
         if (ifProjectExist(projectName)) {
-            allProjects.get(projectName).addTaskToProject(task.getTaskID());
+            allProjects.get(projectName).addTaskIDtoProject(task.getTaskID());
         } else {
             Project newProject = new Project(projectName);
-            newProject.addTaskToProject(task.getTaskID());
+            newProject.addTaskIDtoProject(task.getTaskID());
             addProject(newProject);
         }
     }
 
 
-    private void removeTaskFromProject(ToDoTask task, String projectName) {
+    public void removeTaskFromProject(ToDoTask task, String projectName) {
         Integer taskID = task.getTaskID();
         allProjects.get(projectName).removeTaskByID(taskID);
     }
@@ -85,10 +85,8 @@ public class DataManager implements Serializable {
         int taskId = task.getTaskID();
         allTasks.remove(taskId);
 
-        Collection<Project> list = allProjects.values();
-        for (Project p : list) {
-            p.removeTaskByID(taskId);
-        }
+        allProjects.values()
+                .forEach(project -> project.removeTaskByID(taskId));
     }
 
     public void deleteProject(String projectName) {
@@ -97,9 +95,10 @@ public class DataManager implements Serializable {
 
     public void deleteAllTasksInTheProject(String projectName) {
         allProjects.get(projectName).getListOfTasks()
-                .forEach(taskId -> allTasks.remove(taskId));
-    }
+                .forEach(taskID-> allTasks.remove(taskID));
 
+        allProjects.get(projectName).getListOfTasks().clear();
+    }
 
     private String constructDetails(ToDoTask task) {
         return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\n \t  Details: "

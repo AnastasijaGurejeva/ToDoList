@@ -22,7 +22,7 @@ public class Project implements Serializable {
         return projectName;
     }
 
-    public void addTaskToProject(Integer taskID) {
+    public void addTaskIDtoProject(Integer taskID) {
         listOfTasksID.add(taskID);
     }
 
