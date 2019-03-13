@@ -1,8 +1,18 @@
-package ToDoList;
+/**
+ * This view class displays an instruction to edit an existing task.
+ * It allows user to select a task from a task list by typing task's ID.
+ * It gives user an option to edit title/detail/dueDate
+ * Then instruction is displayed to enter e new title/details/dueDate
+ * Entered data is validated and together with a selected task is passed to a controller which completes the edit operation.
+ * */
+
+package MVCtoDoList;
+
+import ToDoList.ToDoTask;
 
 import java.time.LocalDate;
 
-public class EditTask extends ViewSuperClass {
+public class EditTaskView extends abstractView {
 
     private ToDoTask selectedTaskToEdit;
     private String editedTaskTitle;
@@ -10,15 +20,15 @@ public class EditTask extends ViewSuperClass {
     private LocalDate editedTaskDueDate;
 
 
-    public EditTask() {
-        super("TASK MENU",
+    public EditTaskView() {
+        super("\t\t\tTASK EDIT MENU",
                 "Please select the task you want to edit by typing task's No ");
     }
 
     @Override
     public void display() {
         super.printUserInterface();
-        passedLibraryData.printList();
+        passedDataManager.printList();
     }
 
 
@@ -31,18 +41,7 @@ public class EditTask extends ViewSuperClass {
 
     @Override
     public void readInput() {
-
-        Integer id;
-        while (true) {
-            id = readIntegerInput();
-            if (passedLibraryData.getAllTasks().containsKey(id)) {
-                selectedTaskToEdit = passedLibraryData.getAllTasks().get(id);
-                break;
-            } else {
-                System.out.println("Please enter a valid number of Selected task");
-            }
-        }
-
+        selectedTaskToEdit = selectTask();
         displaySubMenu();
 
         int menuChoice = readIntegerInput();
@@ -68,7 +67,7 @@ public class EditTask extends ViewSuperClass {
     }
 
     public void sendInput() {
-        inputData.put("menuType", 3);
+        inputData.put("operationType", 3);
         inputData.put("selectedTaskToEdit", selectedTaskToEdit);
         inputData.put("editedTaskTitle", editedTaskTitle);
         setChanged();
@@ -77,7 +76,7 @@ public class EditTask extends ViewSuperClass {
     }
 
     private void sendInput1() {
-        inputData.put("menuType", 4);
+        inputData.put("operationType", 4);
         inputData.put("selectedTaskToEdit", selectedTaskToEdit);
         inputData.put("editedTaskDueDate", editedTaskDueDate);
         setChanged();
@@ -86,18 +85,12 @@ public class EditTask extends ViewSuperClass {
     }
 
     private void sendInput2() {
-        inputData.put("menuType", 5);
+        inputData.put("operationType", 5);
         inputData.put("selectedTaskToEdit", selectedTaskToEdit);
         inputData.put("editedTaskDetails", editedTaskDetails);
         setChanged();
         notifyObservers(inputData);
     }
-
-    @Override
-    public void notification() {
-        System.out.println("Your task was edited");
-    }
-
 }
 
 

@@ -1,3 +1,9 @@
+/**
+ * This class has all main fields for ToDoTask and setters/getters to access these fields.
+ * Task has a static ID field which is unique for every task.
+ * Also this class include a method to change task status.
+ * */
+
 package ToDoList ;
 
 import java.io.Serializable;

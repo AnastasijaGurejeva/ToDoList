@@ -1,17 +1,25 @@
-package ToDoList;
+/**
+ * This view class displays instruction to delete an existing project.
+ * It allows user to select a project from a project list by typing an existing project name.
+ * It checks if input matches existing projects name.
+ * It gives user an option to just delete a project or delete it with all content (all tasks inside).
+ * Selected project name together with a selected option is then passed to a controller which completes the delete operation.
+ * */
 
-public class DeleteProject extends ViewSuperClass {
+package MVCtoDoList;
+
+public class DeleteProjectView extends abstractView {
     private String selectedProject;
 
-    public DeleteProject() {
-        super("LIST OF YOUR PROJECTS",
+    public DeleteProjectView() {
+        super("\t\t\tLIST OF YOUR PROJECTS",
                 "Please enter the name of the existing Project:");
     }
 
     @Override
     public void display() {
         super.printUserInterface();
-        passedLibraryData.getAllProjects().keySet().stream()
+        passedDataManager.getAllProjects().keySet().stream()
                 .forEach(k -> System.out.println(k.toUpperCase()));
 
     }
@@ -27,7 +35,7 @@ public class DeleteProject extends ViewSuperClass {
     public void readInput() {
         while (true) {
             String inputProjectName = scanner.nextLine();
-            if (passedLibraryData.getAllProjects().containsKey(inputProjectName)) {
+            if (passedDataManager.getAllProjects().containsKey(inputProjectName)) {
                 selectedProject = inputProjectName;
                 break;
             } else {
@@ -37,7 +45,6 @@ public class DeleteProject extends ViewSuperClass {
         }
 
         additionalDisplay();
-
         int menuChoice = readIntegerInput();
         switch (menuChoice) {
             case 0:
@@ -51,22 +58,17 @@ public class DeleteProject extends ViewSuperClass {
 
     @Override
     public void sendInput() {
-        inputData.put("menuType", 10);
+        inputData.put("operationType", 10);
         inputData.put("selectedProjectToDelete", selectedProject);
         setChanged();
         notifyObservers(inputData);
     }
 
     private void sendInput1() {
-        inputData.put("menuType", 11);
+        inputData.put("operationType", 11);
         inputData.put("selectedProjectToDelete", selectedProject);
         setChanged();
         notifyObservers(inputData);
-    }
-
-    @Override
-    public void notification() {
-        System.out.println("Your project was deleted");
     }
 }
 

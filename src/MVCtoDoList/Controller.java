@@ -1,4 +1,15 @@
-package ToDoList;
+/**
+ * This class is a main operation class. It initializes a DataManager.
+ * This class is an Observer which receives input information from View classes.
+ * It initializes all views for different menu options.
+ * Main Menu View is launched automatically and it sends users input to a controller, which activates requested view class.
+ * It retrieves the data which was send by Observable (View classes) and performs required action.
+ * This class also has methods for saving and loading data
+ * */
+
+package MVCtoDoList;
+
+import ToDoList.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -6,9 +17,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 class Controller implements Observer {
-    private ViewSuperClass view;
-    private Library library = new Library();
-    private List<ViewSuperClass> views;
+    private abstractView view;
+    private DataManager dataManager = new DataManager();
+    private List<abstractView> views;
 
 
     public Controller() {
@@ -17,12 +28,12 @@ class Controller implements Observer {
 
 
     public void loadDataLibrary() {
-        Library library1 = new Library();
+        DataManager dataManager1 = new DataManager();
         try {
-            FileInputStream dataLibrary = new FileInputStream("library.ser");
+            FileInputStream dataLibrary = new FileInputStream("dataManager.ser");
             ObjectInputStream inDataLibrary = new ObjectInputStream(dataLibrary);
 
-            library1 = (Library) inDataLibrary.readObject();
+            dataManager1 = (DataManager) inDataLibrary.readObject();
             inDataLibrary.close();
             dataLibrary.close();
 
@@ -32,21 +43,21 @@ class Controller implements Observer {
             System.out.println("ClassNotFoundException is caught");
         }
 
-        if (library1 != null) {
-            this.library = library1;
+        if (dataManager1 != null) {
+            this.dataManager = dataManager1;
             loadStaticTaskId();
         }
     }
 
     /**
-     * This Method updates Static field of ToDoTask after the library is deserialized.
+     * This Method updates Static field of ToDoTask after the dataManager is deserialized.
      * During serialization static fields are ignored. Needs to be updated manually.
      * To find the last ID in the HashMap reduce function is used.
      * ID can differ from HashMap size value as tasks are added and deleted multiple times during use
      * */
 
     private void loadStaticTaskId() {
-        int maxId = library.getAllTasks().keySet().stream()
+        int maxId = dataManager.getAllTasks().keySet().stream()
         .reduce(0, (a, b) -> Integer.max(a, b));
         ToDoTask.updateTaskID(maxId);
     }
@@ -54,12 +65,12 @@ class Controller implements Observer {
     private void saveData() {
         try {
             FileOutputStream dataLibrary =
-                    new FileOutputStream("library.ser");
+                    new FileOutputStream("dataManager.ser");
             ObjectOutputStream outDataLibrary = new ObjectOutputStream(dataLibrary);
-            outDataLibrary.writeObject(library);
+            outDataLibrary.writeObject(dataManager);
             dataLibrary.close();
             outDataLibrary.close();
-            System.out.println("Library was serialized");
+            System.out.println("DataManager was serialized");
         } catch (IOException ioe) {
             System.out.println("IOException is caught");
             ioe.printStackTrace();
@@ -71,20 +82,20 @@ class Controller implements Observer {
      */
 
     public void addViews() {
-        views.add(new MainView());
-        views.add(new CreateTask());
-        views.add(new AssignProject());
-        views.add(new EditTask());
-        views.add(new ChangeStatus());
-        views.add(new DeleteTask());
-        views.add(new FilterByProject());
-        views.add(new ReassignProject());
-        views.add(new DeleteProject());
+        views.add(new MainMenuView());
+        views.add(new CreateTaskView());
+        views.add(new AssignProjectView());
+        views.add(new EditTaskView());
+        views.add(new ChangeStatusView());
+        views.add(new DeleteTaskView());
+        views.add(new FilterByProjectView());
+        views.add(new ReassignProjectView());
+        views.add(new DeleteProjectView());
     }
 
-    private void startView(ViewSuperClass view) {
+    private void startView(abstractView view) {
         view.addObserver(this);
-        view.getLibrary(library);
+        view.getDataManager(dataManager);
         view.display();
         view.readInput();
         view.sendInput();
@@ -117,7 +128,7 @@ class Controller implements Observer {
     /**
      * This method is calling corresponding view Class to display instructions for the user and read the users input.
      * First retrieving initialized view object from ArrayList
-     * Passing Library value to View class in order to display current list of ToDoTasks.
+     * Passing DataManager value to View class in order to display current list of ToDoTasks.
      */
 
     private void callAssignProject() {
@@ -158,9 +169,9 @@ class Controller implements Observer {
     @Override
     public void update(Observable sender, Object arg) {
         Map inputData = (Map) arg;
-        int menuType = (int) inputData.get("menuType");
+        int operationType = (int) inputData.get("operationType");
 
-        if (menuType == 0) {
+        if (operationType == 0) {
             int menuChoice;
             menuChoice = (int) inputData.get("menuChoice");
 
@@ -182,12 +193,12 @@ class Controller implements Observer {
                     CallDeleteTask();
                     break;
                 case 5:
-                    library.printList();
+                    dataManager.printList();
                     generatePauseAfterPrintingList();
                     start();
                     break;
                 case 6:
-                    library.sortByDueDate();
+                    dataManager.sortByDueDate();
                     generatePauseAfterPrintingList();
                     start();
                     break;
@@ -206,77 +217,67 @@ class Controller implements Observer {
 
             }
 
-        } else if (menuType == 1) {
+        } else if (operationType == 1) {
             ToDoTask newTask = new ToDoTask((String) inputData.get("newTaskTitle"),
                     (String) inputData.get("newTaskDetails"), (LocalDate) inputData.get("newDueDate"));
-            library.addTask(newTask);
-            view.notification();
+            dataManager.addTask(newTask);
             generatePause();
             start();
 
-        } else if (menuType == 2) {
-            library.assignTaskToProject((ToDoTask) inputData.get("selectedTask"), (String) inputData.get("projectName"));
-            view.notification();
+        } else if (operationType == 2) {
+            dataManager.assignTaskToProject((ToDoTask) inputData.get("selectedTask"), (String) inputData.get("projectName"));
             generatePause();
             start();
 
-        } else if (menuType == 3) {
+        } else if (operationType == 3) {
             ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
             task.setTaskTitle((String) inputData.get("editedTaskTitle"));
-            view.notification();
             generatePause();
             start();
 
-        } else if (menuType == 4) {
-            ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
-            task.setTaskDueDate((LocalDate) inputData.get("editedTaskDueDate"));
-            view.notification();
+        } else if (operationType == 4) {
+            ToDoTask selectedTask = (ToDoTask) inputData.get("selectedTaskToEdit");
+            selectedTask.setTaskDueDate((LocalDate) inputData.get("editedTaskDueDate"));
             generatePause();
             start();
 
-        } else if (menuType == 5) {
-            ToDoTask task = (ToDoTask) inputData.get("selectedTaskToEdit");
-            task.setTaskDetails((String) inputData.get("editedTaskDetails"));
-            view.notification();
+        } else if (operationType == 5) {
+            ToDoTask selectedTask = (ToDoTask) inputData.get("selectedTaskToEdit");
+            selectedTask.setTaskDetails((String) inputData.get("editedTaskDetails"));
             generatePause();
             start();
 
-        } else if (menuType == 6) {
-            ToDoTask task = (ToDoTask) inputData.get("selectedTaskToChange");
-            task.changeTaskStatus();
-            view.notification();
+        } else if (operationType == 6) {
+            ToDoTask selectedTask = (ToDoTask) inputData.get("selectedTaskToChange");
+            selectedTask.changeTaskStatus();
             generatePause();
             start();
 
-        } else if (menuType == 7) {
-            ToDoTask task = (ToDoTask) inputData.get("selectedTaskToDelete");
-            library.deleteTask(task);
-            view.notification();
+        } else if (operationType == 7) {
+            ToDoTask selectedTask = (ToDoTask) inputData.get("selectedTaskToDelete");
+            dataManager.deleteTask(selectedTask);
             generatePause();
             start();
 
-        } else if (menuType == 8) {
-            library.sortByProject((String) inputData.get("selectedProject"));
+        } else if (operationType == 8) {
+            dataManager.sortByProject((String) inputData.get("selectedProjectName"));
             generatePauseAfterPrintingList();
             start();
 
-        } else if (menuType == 9) {
-            library.reassignTasksProject((ToDoTask) inputData.get("selectedTaskToReassign"),
+        } else if (operationType == 9) {
+            dataManager.reassignTasksProject((ToDoTask) inputData.get("selectedTaskToReassign"),
                     (String) inputData.get("oldProjectName"), (String) inputData.get("newProjectName"));
-            view.notification();
             generatePause();
             start();
 
-        } else if (menuType == 10) {
-            library.deleteProject((String) inputData.get("selectedProjectToDelete"));
-            view.notification();
+        } else if (operationType == 10) {
+            dataManager.deleteProject((String) inputData.get("selectedProjectToDelete"));
             generatePause();
             start();
 
-        } else if (menuType == 11) {
-            library.deleteAllTasksInTheProject((String) inputData.get("selectedProjectToDelete"));
-            library.deleteProject((String) inputData.get("selectedProjectToDelete"));
-            view.notification();
+        } else if (operationType == 11) {
+            dataManager.deleteAllTasksInTheProject((String) inputData.get("selectedProjectToDelete"));
+            dataManager.deleteProject((String) inputData.get("selectedProjectToDelete"));
             generatePause();
             start();
         }

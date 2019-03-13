@@ -1,4 +1,4 @@
-package ToDoList;
+package MVCtoDoList;
 
 public class Main {
 

@@ -1,23 +1,27 @@
-package ToDoList;
+/**
+ * This view class displays an instruction to create a new task.
+ * It reads and validates all input and then pass that input to a controller which completes the task create operation.
+ * */
+
+package MVCtoDoList;
 
 import java.time.LocalDate;
 
-public class CreateTask extends ViewSuperClass {
+public class CreateTaskView extends abstractView {
     private String taskTitle;
     private String taskDetails;
     private LocalDate taskDueDate;
 
 
-    public CreateTask() {
-        super("CREATE A NEW TASK",
+    public CreateTaskView() {
+        super("\t\t\tCREATE A NEW TASK",
                 "");
-
     }
 
     @Override
     public void display() {
         super.printUserInterface();
-        System.out.println("Please follow instructions below:\n");
+        System.out.println("Please follow the instructions below:\n");
     }
 
     @Override
@@ -36,16 +40,11 @@ public class CreateTask extends ViewSuperClass {
 
     @Override
     public void sendInput() {
-        inputData.put("menuType" , 1);
+        inputData.put("operationType" , 1);
         inputData.put("newTaskTitle" , taskTitle);
         inputData.put("newTaskDetails" , taskDetails);
         inputData.put("newDueDate" , taskDueDate);
         setChanged();
         notifyObservers(inputData);
-    }
-
-    @Override
-    public void notification() {
-        System.out.println("New task was created");
     }
 }

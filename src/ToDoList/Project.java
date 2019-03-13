@@ -1,13 +1,13 @@
+/** This Class holds ID list for ToDoTasks by corresponding Project
+ *  Because project contains only ID, that means Exactly Same task might be
+ *  assigned to different Projects.
+ **/
+
 package ToDoList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-/** This Class holds ID for ToDoTasks by corresponding Project
-*   Because project contains only ID, that means Exactly Same task might be
-*   assigned to different Projects.
- */
 
 public class Project implements Serializable {
     private String projectName;

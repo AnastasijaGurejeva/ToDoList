@@ -1,13 +1,18 @@
+/**
+ * This class contains all data for ToDoList. It has a HashMap of all Tasks and a HashMap of all projects
+ * This class contains all main methods to operate the data.
+ * */
+
 package ToDoList;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Library implements Serializable {
+public class DataManager implements Serializable {
     private HashMap<Integer, ToDoTask> allTasks;
     private HashMap<String, Project> allProjects;
 
-    public Library() {
+    public DataManager() {
         allTasks = new HashMap<>();
         allProjects = new HashMap<>();
     }
@@ -39,10 +44,7 @@ public class Library implements Serializable {
     }
 
     private boolean ifProjectExist(String projectName) {
-        if (allProjects.containsKey(projectName)) {
-        return true;
-        } else
-        return false;
+        return allProjects.containsKey(projectName);
     }
 
     /**
@@ -94,20 +96,25 @@ public class Library implements Serializable {
     }
 
     public void deleteAllTasksInTheProject(String projectName) {
-        allProjects.get(projectName).getListOfTasks().stream()
+        allProjects.get(projectName).getListOfTasks()
                 .forEach(taskId -> allTasks.remove(taskId));
     }
 
 
     private String constructDetails(ToDoTask task) {
-        return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\t \t \t  Task details: "
+        return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\n \t  Details: "
                 + task.getTaskDetails() + "\n \t  Due date: " + task.getTaskDueDate()
-                + "\t \t  Task status: " + task.taskStatus();
+                + "\t \t  Status: " + task.taskStatus();
+    }
+
+    public void printProjectList() {
+        allProjects.keySet()
+                .forEach(key -> System.out.println(key.toUpperCase()));
     }
 
     public void printList() {
-        allTasks.values().stream()
-                .forEach(t -> System.out.println(constructDetails(t)));
+        allTasks.values()
+                .forEach(task -> System.out.println(constructDetails(task)));
     }
 
     public void sortByProject(String projectName) {
@@ -122,7 +129,7 @@ public class Library implements Serializable {
     public void sortByDueDate() {
         allTasks.values().stream()
                 .sorted(Comparator.comparing(ToDoTask::getTaskDueDate))
-                .forEach(t -> System.out.println(constructDetails(t)));
+                .forEach(task -> System.out.println(constructDetails(task)));
     }
 
 }

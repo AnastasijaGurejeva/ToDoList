@@ -1,23 +1,34 @@
-package ToDoList;
+/**
+ * This class is an abstract class for all View classes.
+ * View classes are displaying instruction for users, reads their inputs and sends data to controller,which operates the data.
+ * There are 3 abstract methods which are implemented in all View classes: display; readInput; sendInput.
+ * This class has few protected fields which are shared between all View classes.
+ * It also has input validation methods and selectTask method which are used in view classes.
+ * */
+
+package MVCtoDoList;
+
+import ToDoList.DataManager;
+import ToDoList.ToDoTask;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public abstract class ViewSuperClass extends Observable {
+public abstract class abstractView extends Observable {
     private String viewTitle;
     private String viewDescription;
     protected Scanner scanner = new Scanner(System.in);
     protected Map<String, Object> inputData;
-    protected Library passedLibraryData;
+    protected DataManager passedDataManager;
 
 
-    public void getLibrary(Library library) {
-        passedLibraryData = library;
+    public void getDataManager(DataManager dataManager) {
+        passedDataManager = dataManager;
     }
 
-    public ViewSuperClass(String menuTitle, String menuDescription) {
+    public abstractView(String menuTitle, String menuDescription) {
         this.viewTitle = menuTitle;
         this.viewDescription = menuDescription;
         this.inputData = new HashMap<>();
@@ -31,9 +42,6 @@ public abstract class ViewSuperClass extends Observable {
     abstract public void display();
     abstract public void readInput();
     abstract public void sendInput();
-    abstract public void notification();
-
-
 
     public int readIntegerInput() {
         int choice;
@@ -48,6 +56,20 @@ public abstract class ViewSuperClass extends Observable {
         }
     }
 
+    public ToDoTask selectTask() {
+        ToDoTask selectedTask;
+        Integer id;
+        while (true) {
+            id = readIntegerInput();
+            if (passedDataManager.getAllTasks().containsKey(id)) {
+                selectedTask = passedDataManager.getAllTasks().get(id);
+                break;
+            } else {
+                System.out.println("Please enter a valid number of Selected task");
+            }
+        }
+        return selectedTask;
+    }
 
     public LocalDate readDateInput() {
 
@@ -70,4 +92,5 @@ public abstract class ViewSuperClass extends Observable {
             }
         }
     }
+
 }
