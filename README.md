@@ -3,9 +3,12 @@
 This is a simple ToDoList application which uses text based user interface via the command-line.
 It allows user to create tasks, assign them to a project, edit task, mark as done, sort the list and other.
 More detail users menu is displayed below.
-![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/master/Screenshot%202019-03-15%20at%2011.08.30.png)
 
-
+### Usage
+- Clone this directory 
+- Run main.java from MVCtoDoList package
+- Enter menu choice via command line and follow displayed instructions.
+![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/master/Screenshot%202019-03-15%20at%2011.42.07.png)
 
 ### ToDoList architecture
 This java project consists of 3 packages: ToDoList, MVCtoDoList, Testing.
