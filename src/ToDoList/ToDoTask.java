@@ -1,34 +1,42 @@
-package ToDoList;
+/**
+ * This class has all main fields for ToDoTask and setters/getters to access these fields.
+ * Task has a static ID field which is unique for every task.
+ * Also this class include a method to change task status.
+ * */
 
+package ToDoList ;
+
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
-public class ToDoTask {
+public class ToDoTask implements Serializable {
     private String taskTitle;
     private String taskDetails;
     private boolean taskStatus;
     private int taskID;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
     private LocalDate taskDueDate;
     private static int countID = 0;
 
 
-
-    public ToDoTask(String taskTitle, String taskDetails, String taskDueDate) {
+    public ToDoTask(String taskTitle, String taskDetails, LocalDate taskDueDate) {
         this.taskTitle = taskTitle;
         this.taskDetails = taskDetails;
-        this.taskDueDate = LocalDate.parse(taskDueDate,formatter);
+        this.taskDueDate = taskDueDate;
         this.taskStatus = false;
         this.countID++;
         taskID = this.countID;
     }
 
-    public ToDoTask(String taskTitle) {
-        this (taskTitle, "",  "31/12/2019");
-    }
-
     public int getTaskID() {
         return taskID;
+    }
+
+    /**
+     * This method is used to set static ID field after deserialization.
+     */
+
+    static public void updateTaskID(int iD ) {
+        countID = iD;
     }
 
     public String getTaskTitle() {
@@ -43,13 +51,8 @@ public class ToDoTask {
         return taskDueDate;
     }
 
-    public void setTaskDueDate(String newTaskDueDate) {
-        LocalDate taskDueDate = LocalDate.parse(newTaskDueDate,formatter);
-        if (taskDueDate.isAfter(LocalDate.now())) {
-            this.taskDueDate = taskDueDate;
-        } else {
-            System.out.println("The date is set before today's date");
-        }
+    public void setTaskDueDate(LocalDate newTaskDueDate) {
+            this.taskDueDate = newTaskDueDate;
     }
 
     public String getTaskDetails() {
@@ -60,17 +63,23 @@ public class ToDoTask {
         this.taskDetails = taskDetails;
     }
 
-    public boolean isTaskDone() {
+    private boolean isTaskDone() {
         return taskStatus;
+    }
+
+    public String printTaskStatus() {
+        if(isTaskDone()) {
+            return "Done";
+        } else {
+            return "Not done";
+        }
     }
 
     public void changeTaskStatus() {
         if(isTaskDone()) {
             taskStatus = false;
-            System.out.println("Not done");
         } else {
             taskStatus = true;
-            System.out.println("Done");
         }
     }
 }
