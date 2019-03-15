@@ -10,7 +10,9 @@ public class MainMenuView extends abstractView {
     private int menuChoice;
 
     public MainMenuView() {
-        super("\t\t\tMAIN MENU",
+        super("––––––––––––––––––––––––––––––––––––––––––––\n" +
+                        "\t\t\t\tMAIN MENU\n" +
+                        "____________________________________________",
                 "Select an option from the menu below: ");
     }
 
