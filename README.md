@@ -3,7 +3,7 @@
 This is a simple ToDoList application which uses text based user interface via the command-line.
 It allows user to create tasks, assign them to a project, edit task, mark as done, sort the list and other.
 More detail users menu is displayed below.
-![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/master/Screenshot%202019-03-15%20at%2011.08.30.png)
+![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/master/Screenshot%202019-03-15%20at%2011.42.07.png)
 
 
 
