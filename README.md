@@ -17,4 +17,4 @@ MVC consists of 11 classes. When application is launched controller initializes 
 for different menu options. Main menu view is launched. View classes display instructions to the users, reads their input and send
 that input to controller which performs required operation. 
 ### Class Diagram
-![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/UserInputHandler/Class%20Diagram%20ToDoList.jpeg)
+![alt text](https://github.com/AnastasijaGurejeva/ToDoList/blob/master/Class%20Diagram%20ToDoList.jpeg)
