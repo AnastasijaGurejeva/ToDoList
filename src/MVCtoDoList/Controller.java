@@ -27,7 +27,7 @@ class Controller implements Observer {
     }
 
 
-    public void loadDataLibrary() {
+    public void loadData() {
         DataManager dataManager1 = new DataManager();
         try {
             FileInputStream dataLibrary = new FileInputStream("dataManager.ser");
@@ -120,7 +120,7 @@ class Controller implements Observer {
         startView(view);
     }
 
-    private void callCreateTask() {
+    private void callCreateTaskView() {
         view = views.get(1);
         startView(view);
     }
@@ -131,37 +131,37 @@ class Controller implements Observer {
      * Passing DataManager value to View class in order to display current list of ToDoTasks.
      */
 
-    private void callAssignProject() {
+    private void callAssignProjectView() {
         view = views.get(2);
         startView(view);
     }
 
-    private void callEditTask() {
+    private void callEditTaskView() {
         view = views.get(3);
         startView(view);
     }
 
-    private void callChangeTaskStatus() {
+    private void callChangeTaskStatusView() {
         view = views.get(4);
         startView(view);
     }
 
-    private void CallDeleteTask() {
+    private void callDeleteTaskView() {
         view = views.get(5);
         startView(view);
     }
 
-    private void callFilterByProject() {
+    private void callFilterByProjectView() {
         view = views.get(6);
         startView(view);
     }
 
-    private void callReassignProject() {
+    private void callReassignProjectView() {
         view = views.get(7);
         startView(view);
     }
 
-    private void callDeleteProject() {
+    private void callDeleteProjectView() {
         view = views.get(8);
         startView(view);
     }
@@ -178,19 +178,19 @@ class Controller implements Observer {
 
             switch (menuChoice) {
                 case 0:
-                    callCreateTask();
+                    callCreateTaskView();
                     break;
                 case 1:
-                    callAssignProject();
+                    callAssignProjectView();
                     break;
                 case 2:
-                    callEditTask();
+                    callEditTaskView();
                     break;
                 case 3:
-                    callChangeTaskStatus();
+                    callChangeTaskStatusView();
                     break;
                 case 4:
-                    CallDeleteTask();
+                    callDeleteTaskView();
                     break;
                 case 5:
                     dataManager.printList();
@@ -203,13 +203,13 @@ class Controller implements Observer {
                     start();
                     break;
                 case 7:
-                    callFilterByProject();
+                    callFilterByProjectView();
                     break;
                 case 8:
-                    callReassignProject();
+                    callReassignProjectView();
                     break;
                 case 9:
-                    callDeleteProject();
+                    callDeleteProjectView();
                     break;
                 case 10:
                     saveData();

@@ -103,7 +103,7 @@ public class DataManager implements Serializable {
     private String constructDetails(ToDoTask task) {
         return "No: " + task.getTaskID() + " " + task.getTaskTitle().toUpperCase() + "\n \t  Details: "
                 + task.getTaskDetails() + "\n \t  Due date: " + task.getTaskDueDate()
-                + "\t \t  Status: " + task.taskStatus();
+                + "\t \t  Status: " + task.printTaskStatus();
     }
 
     public void printProjectList() {

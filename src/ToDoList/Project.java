@@ -26,8 +26,8 @@ public class Project implements Serializable {
         listOfTasksID.add(taskID);
     }
 
-    public void removeTaskByID(Integer iD) {
-        listOfTasksID.remove(iD);
+    public void removeTaskByID(Integer taskID) {
+        listOfTasksID.remove(taskID);
     }
 
     public List <Integer> getListOfTasks() {

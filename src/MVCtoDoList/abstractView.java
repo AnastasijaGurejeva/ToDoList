@@ -24,14 +24,14 @@ public abstract class abstractView extends Observable {
     protected DataManager passedDataManager;
 
 
-    public void getDataManager(DataManager dataManager) {
-        passedDataManager = dataManager;
-    }
-
     public abstractView(String menuTitle, String menuDescription) {
         this.viewTitle = menuTitle;
         this.viewDescription = menuDescription;
         this.inputData = new HashMap<>();
+    }
+
+    public void getDataManager(DataManager dataManager) {
+        passedDataManager = dataManager;
     }
 
     public void printUserInterface() {

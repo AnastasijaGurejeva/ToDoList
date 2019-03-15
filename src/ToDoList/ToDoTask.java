@@ -67,7 +67,7 @@ public class ToDoTask implements Serializable {
         return taskStatus;
     }
 
-    public String taskStatus() {
+    public String printTaskStatus() {
         if(isTaskDone()) {
             return "Done";
         } else {
